@@ -2,68 +2,102 @@
 
 Traverse is a host marketplace platform for India where tourists connect with local hosts and get AI-generated category-based plans.
 
-## Stack
+## Repository
 
-- Frontend: Next.js App Router + Tailwind
+- GitHub: `https://github.com/nniikkyy/Traverse`
+
+## Tech Stack
+
+- Frontend: Next.js App Router + Tailwind CSS
 - Backend: FastAPI
-- AI: OpenAI + tool orchestration (host match, itinerary, safety)
+- AI Layer: OpenAI + tool orchestration (host matching, itinerary generation, safety checks)
 
-## Monorepo Layout
+## Monorepo Structure
 
-- `app/`, `components/`: Primary Next.js frontend
-- `local-host-ai/backend/`: FastAPI API and AI orchestration
-- `local-host-ai/frontend/`: Additional standalone Next.js frontend
-- `render.yaml`: Render deployment config for backend API
+- `app/`, `components/`: Main Next.js frontend (submission UI)
+- `local-host-ai/backend/`: FastAPI backend with AI routes and services
+- `local-host-ai/frontend/`: Standalone Next.js variant for local-host flow
+- `render.yaml`: Render deployment blueprint for backend
+- `docs/`: Submission documents (architecture, API samples, evidence checklist)
 
-## Local Development
+## How To Run Locally
 
-### Frontend (root app)
+### Prerequisites
 
-```bash
-npm install
-npm run dev
-```
+- Node.js 18+
+- Python 3.10+
 
-### Backend API
+### 1. Run Backend (FastAPI)
 
 ```bash
 cd local-host-ai/backend
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
+export OPENAI_API_KEY=your_openai_api_key
+export ALLOWED_ORIGINS=http://localhost:3000,http://localhost:3001,http://localhost:3002
 uvicorn main:app --reload --port 8000
+```
+
+Backend URLs:
+
+- Health: `http://localhost:8000/healthz`
+- Agent endpoint: `http://localhost:8000/ai/agent-chat`
+
+### 2. Run Main Frontend (Traverse)
+
+```bash
+npm install
+export NEXT_PUBLIC_API_BASE=http://localhost:8000
+npm run dev
+```
+
+Main frontend URL: `http://localhost:3000` (or next available port)
+
+### 3. Optional: Run Local-Host Frontend Variant
+
+```bash
+cd local-host-ai/frontend
+npm install
+export NEXT_PUBLIC_API_BASE=http://localhost:8000
+npm run dev
 ```
 
 ## Environment Variables
 
 Backend (`local-host-ai/backend`):
 
-- `OPENAI_API_KEY`: required for full LLM-powered extraction/composition
-- `ALLOWED_ORIGINS`: comma-separated frontend domains for CORS
+- `OPENAI_API_KEY`: Enables LLM-based extraction and response composition
+- `ALLOWED_ORIGINS`: Comma-separated allowed frontend domains
 
 Frontend:
 
-- `NEXT_PUBLIC_API_BASE`: backend base URL (for example `https://your-api.onrender.com`)
+- `NEXT_PUBLIC_API_BASE`: Backend base URL, for example `http://localhost:8000`
 
-## Deployment (Phase 2)
+## University Submission Pack
 
-### 1. Deploy Backend on Render
+The repository includes all required submission items:
 
-1. In Render, create a new Blueprint or Web Service from this repository.
-2. If using Blueprint, Render will use `render.yaml` automatically.
-3. Set environment variables:
-	- `OPENAI_API_KEY`
-	- `ALLOWED_ORIGINS` (for example `https://traverse.vercel.app`)
-4. Confirm service health check path: `/healthz`.
+1. GitHub repository link: this README (`https://github.com/nniikkyy/Traverse`)
+2. Local run instructions: this README (section above)
+3. Architecture diagram: `docs/architecture.md`
+4. Sample API requests/responses: `docs/api-examples.md`
+5. Demo + screenshots checklist: `docs/submission-evidence.md`
 
-### 2. Deploy Frontend on Vercel
+## Deployment Notes
 
-1. Import the same repository in Vercel.
-2. Set root directory to repository root.
-3. Add env var:
-	- `NEXT_PUBLIC_API_BASE=https://your-render-backend-url`
-4. Deploy.
+### Backend (Render)
 
-### 3. Finalize CORS
+Use `render.yaml` or configure manually with:
 
-After Vercel gives your domain, update Render `ALLOWED_ORIGINS` with that exact domain and redeploy backend.
+- Root: `local-host-ai/backend`
+- Build command: `pip install -r requirements.txt`
+- Start command: `uvicorn main:app --host 0.0.0.0 --port $PORT`
+- Health check path: `/healthz`
+
+### Frontend (Vercel)
+
+- Root directory: repository root
+- Env var: `NEXT_PUBLIC_API_BASE=https://your-backend-url`
+
+After frontend deploy, update backend `ALLOWED_ORIGINS` to the exact Vercel domain.
