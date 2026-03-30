@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background:
+        radial-gradient(circle at 8% 10%, rgba(56, 189, 248, 0.16), transparent 25%),
+        radial-gradient(circle at 80% 20%, rgba(45, 212, 191, 0.14), transparent 28%),
+        linear-gradient(180deg, #f8fbff 0%, #eef4f8 100%);
+    color: #0f172a;
+    font-family: var(--font-body), sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-head), sans-serif;
+}
+
+.section-wrap {
+    @apply mx-auto w-full max-w-7xl px-4 md:px-6;
+}
+
+.container-page {
+    @apply mx-auto w-full max-w-7xl px-4 md:px-6;
+}
+
+.glass {
+    @apply rounded-2xl border border-white/30 bg-white/70 backdrop-blur-md;
+}
+
+.card-hover {
+    @apply transition duration-300 ease-out hover:-translate-y-1 hover:shadow-soft;
+}
+
+.section-title {
+    @apply text-4xl font-black tracking-tight text-slate-900 md:text-5xl;
+}
+
+.section-subtitle {
+    @apply mt-2 text-base text-slate-600 md:text-lg;
+}
+
+.lux-card {
+    @apply overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft;
+}
+
+@keyframes slow-float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-14px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+.animate-slow-float {
+    animation: slow-float 9s ease-in-out infinite;
+}
+
+@keyframes rise-fade {
+    0% {
+        opacity: 0;
+        transform: translateY(22px) scale(0.98);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes pulse-glow {
+    0% {
+        box-shadow: 0 0 0 rgba(45, 212, 191, 0);
+    }
+
+    50% {
+        box-shadow: 0 0 36px rgba(45, 212, 191, 0.22);
+    }
+
+    100% {
+        box-shadow: 0 0 0 rgba(45, 212, 191, 0);
+    }
+}
+
+.motion-fade-up {
+    opacity: 0;
+    transform: translateY(22px) scale(0.98);
+    animation: rise-fade 700ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation-delay: var(--delay, 0ms);
+}
+
+.motion-card {
+    transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 320ms ease, border-color 320ms ease;
+}
+
+.motion-card:hover {
+    transform: translateY(-6px) scale(1.01);
+}
+
+.cta-glow {
+    animation: pulse-glow 2.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 1ms !important;
+        scroll-behavior: auto !important;
+    }
+}
