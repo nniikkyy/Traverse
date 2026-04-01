@@ -16,7 +16,6 @@ Traverse is a host marketplace platform for India where tourists connect with lo
 
 - `app/`, `components/`: Main Next.js frontend (submission UI)
 - `local-host-ai/backend/`: FastAPI backend with AI routes and services
-- `local-host-ai/frontend/`: Standalone Next.js variant for local-host flow
 - `render.yaml`: Render deployment blueprint for backend
 - `docs/`: Submission documents (architecture, API samples, evidence checklist)
 
@@ -53,15 +52,6 @@ npm run dev
 ```
 
 Main frontend URL: `http://localhost:3000` (or next available port)
-
-### 3. Optional: Run Local-Host Frontend Variant
-
-```bash
-cd local-host-ai/frontend
-npm install
-export NEXT_PUBLIC_API_BASE=http://localhost:8000
-npm run dev
-```
 
 ## Environment Variables
 
