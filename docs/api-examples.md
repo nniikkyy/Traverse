@@ -66,7 +66,30 @@ curl -X POST http://localhost:8000/ai/agent-chat \
     "Pick one category route for Day 1.",
     "Confirm host request and budget range."
   ],
-  "assistant_message": "I found host matches in Delhi and prepared a category-based itinerary."
+  "assistant_message": "I found host matches in Delhi and prepared a category-based itinerary.",
+  "plan": [
+    "HostMatchTool",
+    "ItineraryTool"
+  ],
+  "execution_trace": [
+    {
+      "step": 1,
+      "action": "HostMatchTool",
+      "status": "completed",
+      "output_keys": ["host_candidates", "best_host_id"],
+      "description": "Find and score best matching local hosts."
+    },
+    {
+      "step": 2,
+      "action": "ItineraryTool",
+      "status": "completed",
+      "output_keys": ["itinerary_days"],
+      "description": "Generate category-based itinerary days."
+    }
+  ],
+  "critic_notes": [],
+  "confidence": 0.9,
+  "stop_reason": "goal_completed"
 }
 ```
 

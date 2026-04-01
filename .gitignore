@@ -6,3 +6,5 @@ dist
 .next
 __pycache__
 *.pyc
+.run-logs
+local-host-ai/backend/data/*.db

@@ -64,6 +64,23 @@ Frontend:
 
 - `NEXT_PUBLIC_API_BASE`: Backend base URL, for example `http://localhost:8000`
 
+## Agentic Runtime (Traverse AI Agent)
+
+The `/ai/agent-chat` endpoint now runs an agentic loop with:
+
+- Planner stage: selects a tool plan (`HostMatchTool`, `ItineraryTool`, `SafetyTool`)
+- Execution stage: runs tools only when requirements are satisfied
+- Critic stage: scores output completeness and confidence before final response
+- Persistent memory: session state stored in SQLite at `local-host-ai/backend/data/agent_memory.db`
+
+Response now includes additional observability fields:
+
+- `plan`
+- `execution_trace`
+- `critic_notes`
+- `confidence`
+- `stop_reason`
+
 ## University Submission Pack
 
 The repository includes all required submission items:

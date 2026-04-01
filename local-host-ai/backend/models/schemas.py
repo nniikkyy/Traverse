@@ -76,3 +76,8 @@ class AgentChatResponse(BaseModel):
     safety_flags: List[str]
     next_actions: List[str]
     assistant_message: str
+    plan: List[str]
+    execution_trace: List[dict]
+    critic_notes: List[str]
+    confidence: float
+    stop_reason: str
