@@ -60,7 +60,7 @@ def _extract_json_block(text: str) -> dict[str, Any]:
     if start == -1 or end == -1 or end <= start:
         return {}
 
-    return _safe_json_parse(text[start : end + 1])
+    return _safe_json_parse(text[start: end + 1])
 
 
 def _extract_categories(message: str, interests: list[str] | None) -> list[str]:
@@ -124,14 +124,15 @@ def _parse_itinerary_days(itinerary: dict[str, Any]) -> list[dict[str, Any]]:
     if not raw or not isinstance(raw, str):
         return []
 
-    lines = [line.strip("- ").strip() for line in raw.splitlines() if line.strip()]
+    lines = [line.strip("- ").strip()
+             for line in raw.splitlines() if line.strip()]
     if not lines:
         return []
 
     chunks: list[dict[str, Any]] = []
     pointer = 0
     for day in range(1, 4):
-        items = lines[pointer : pointer + 3]
+        items = lines[pointer: pointer + 3]
         if not items:
             break
         chunks.append({"day": day, "items": items})
@@ -307,7 +308,8 @@ def _run_tool(tool_name: str, state: dict[str, Any]) -> dict[str, Any]:
         }
 
     if tool_name == "ItineraryTool":
-        itinerary = generate_itinerary(state["city"], state["interests"], state["budget"])
+        itinerary = generate_itinerary(
+            state["city"], state["interests"], state["budget"])
         return {"itinerary_days": _parse_itinerary_days(itinerary)}
 
     if tool_name == "SafetyTool":
@@ -395,7 +397,8 @@ def run_agent(payload: dict[str, Any]) -> dict[str, Any]:
 
         missing_for_tool = _missing_requirements(tool_name, state)
         if missing_for_tool:
-            required_missing_fields = sorted(set(required_missing_fields + missing_for_tool))
+            required_missing_fields = sorted(
+                set(required_missing_fields + missing_for_tool))
             execution_trace.append(
                 {
                     "step": index,
@@ -430,7 +433,8 @@ def run_agent(payload: dict[str, Any]) -> dict[str, Any]:
     top_host = state["host_candidates"][0]["name"] if state["host_candidates"] else None
 
     if required_missing_fields:
-        next_actions = [f"Please share your {', '.join(required_missing_fields)} to continue."]
+        next_actions = [
+            f"Please share your {', '.join(required_missing_fields)} to continue."]
     else:
         next_actions = [
             "Review top host suggestions.",
@@ -438,7 +442,8 @@ def run_agent(payload: dict[str, Any]) -> dict[str, Any]:
             "Confirm host request and budget range.",
         ]
         if state["safety_flags"]:
-            next_actions.insert(0, "Double-check quoted prices before payment.")
+            next_actions.insert(
+                0, "Double-check quoted prices before payment.")
 
     assistant_message = _llm_compose_message(
         intent=intent,
@@ -450,7 +455,8 @@ def run_agent(payload: dict[str, Any]) -> dict[str, Any]:
         critic_notes=critic_notes,
     )
 
-    memory["history"].append({"role": "assistant", "content": assistant_message})
+    memory["history"].append(
+        {"role": "assistant", "content": assistant_message})
     memory["last_plan"] = plan
     memory["last_confidence"] = confidence
     save_session(session_id, memory)
